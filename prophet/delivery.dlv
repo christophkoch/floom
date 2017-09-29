@@ -1,7 +1,7 @@
 % Message delivery.
 % Is reliable unless the line containing "lost" is uncommented.
 % Does not model latencies, but (through the get_next - next mechanism)
-% Messages are delivered at most once.
+% messages are delivered at most once.
 % Ensures that a msg arrives *after* it is sent (in the partial order
 % built up to model the world; this does not create a causal ordering). 
 %
