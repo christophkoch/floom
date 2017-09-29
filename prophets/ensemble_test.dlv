@@ -1,15 +1,16 @@
 % Run with
-%> dlv po.dlv delivery.dlv paxos.dlv paxos_test2.dlv -N=1
+%> dlv po.dlv delivery.dlv kv.dlv paxos.dlv kv_test.dlv ensemble_test.dlv -N=2
 %
 % There will be no model, so everything is good.
 
-node(n1). node(n2).
 
-kv(n1, 0, a).
-kv(n2, 0, b).
+% force-choose inconsistent worlds to make it interesting.
+inconsistent_world :- bad(_, _, _, _).
+:- not inconsistent_world.
+
 
 % client request
-request(n1, 0).
+request(n1, 3).
 
 bad_paxos(V1, V2) :- answer(N1, V1), answer(N2, V2), V1 != V2.
 
