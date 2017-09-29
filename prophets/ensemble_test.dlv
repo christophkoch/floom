@@ -4,9 +4,8 @@
 % There will be no model, so everything is good.
 
 
-% force-choose inconsistent worlds to make it interesting.
-inconsistent_world :- bad(_, _, _, _).
-:- not inconsistent_world.
+% force-choose worlds with inconsistent kvstores to make it interesting.
+:- not inconsistent_kvstore.
 
 
 % client request

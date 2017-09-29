@@ -12,6 +12,9 @@ bad(N1, V1, N2, V2) :- kv(N1, T, V1), kv(N2, T, V2), V1 != V2, max(T), N1 < N2.
 max(X) :- #int(X), not has_gt(X).
 has_gt(X) :- #int(X), #int(Y), X < Y.
 
+inconsistent_kvstore :- bad(_, _, _, _).
+
+
 
 % Example:
 %
