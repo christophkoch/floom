@@ -1,0 +1,34 @@
+node(n1).
+node(n2).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+% kv is a key-value store with only one key (implicit). easy to generalize.
+
+% client writes to the kv store
+set(n1, 0, a).
+set(n2, 0, b).
+
+
+sent(N0, T0, N, kv_set, V) :- set(N0, T0, V), node(N), N != N0.
+
+% override: local set takes priority over received.
+pick_received(N, T, N, T, kv_set, V) :- set(N, T, V).
+
+% set new value
+kv(N, T, V) :- pick_received(_, _, N, T, kv_set, V).
+
+% inertia: if no change, keep value
+kv(N, T, V) :- kv(N, T0, V), #succ(T0, T), not some_pick(N, T, kv_set).
+
+
+
+% bad worlds in which kv is not consistent in the final state
+bad(N1, V1, N2, V2) :- kv(N1, T, V1), kv(N2, T, V2), V1 != V2, max(T), N1 < N2.
+max(X) :- #int(X), not has_gt(X).
+has_gt(X) :- #int(X), #int(Y), X < Y.
+
+
+
+

@@ -1,0 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%
+% possible partial orders of time stamps
+
+   next(Sender, SenderT, Receiver, ReceiverT)
+v -next(Sender, SenderT, Receiver, ReceiverT) :- 
+      get_next(Sender, SenderT, Receiver), #int(ReceiverT).
+
+next(N, T0, N, T) :- node(N), #int(T0), #succ(T0, T).
+
+before(Sender, SenderT, Receiver, ReceiverT) :-
+  next(Sender, SenderT, Receiver, ReceiverT).
+
+before(N1, T1, N3, T3) :- before(N1, T1, N2, T2), before(N2, T2, N3, T3).
+
+:- before(N, T, N, T).
+
+exists_next(Sender, SenderT, Receiver) :- next(Sender, SenderT, Receiver, _).
+:- get_next(Sender, SenderT, Receiver), not exists_next(Sender, SenderT, Receiver).
+
+:- next(Sender, SenderT, Receiver, RT1), next(Sender, SenderT, Receiver, RT2), RT1 != RT2.
+
+
