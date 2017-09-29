@@ -1,0 +1,27 @@
+
+node(n1).
+node(n2).
+
+% client writes to the kv store
+set(n1, 0, a).
+set(n2, 0, b).
+
+
+% bad worlds in which kv is not consistent in the final state
+bad(N1, V1, N2, V2) :- kv(N1, T, V1), kv(N2, T, V2), V1 != V2, max(T), N1 < N2.
+max(X) :- #int(X), not has_gt(X).
+has_gt(X) :- #int(X), #int(Y), X < Y.
+
+
+% Example:
+%
+%> dlv -N=1 po.dlv sr.dlv kv.dlv kv_test.dlv -filter=bad -filter=kv -filter=next
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), kv(n1,0,a), kv(n2,0,b), next(n1,0,n2,1), next(n2,0,n1,0), kv(n2,1,a), kv(n1,1,a)}
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), kv(n1,0,a), kv(n2,0,b), next(n1,0,n2,0), next(n2,0,n1,1), kv(n1,1,b), kv(n2,1,b)}
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), kv(n1,0,a), kv(n2,0,b), next(n1,0,n2,1), next(n2,0,n1,1), kv(n1,1,b), kv(n2,1,a), bad(n1,b,n2,a)}
+
+
+

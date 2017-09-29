@@ -1,7 +1,6 @@
-%%%%%%%%%%%%%%%%%%%%%%
-% receiving a mesg sent by
+% Receiving a mesg sent by
 % sent(Sender, SenderT, Receiver, MesgID, MesgParameter)
-% optionally picking one is several of the same type are received at the same time.
+% Use pick(..) for optionally picking one if several of the same type are received at the same time.
 
 
 get_next(Sender, SenderT, Receiver) :-
