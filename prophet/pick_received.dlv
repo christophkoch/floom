@@ -1,0 +1,28 @@
+% If received multiple messages of the same type in a single tick,
+% pick exactly one.
+% Must be activated for each message type Mesg for which it is to be
+% used by setting do_pick(Mesg).
+%
+% Requires delivery.dlv (received)
+
+% pick a subset
+ pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) v
+-pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) :-
+      received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam),
+      do_pick(Mesg).
+
+% at most one pick
+:- pick_received(_, _, Receiver, ReceiverT, Mesg, V1),
+   pick_received(_, _, Receiver, ReceiverT, Mesg, V2), V1 != V2.
+
+% at least one pick
+:- received(_, _, Receiver, ReceiverT, Mesg, _),
+   not some_pick(Receiver, ReceiverT, Mesg),
+   do_pick(Mesg).
+some_pick(Receiver, ReceiverT, Mesg) :-
+   pick_received(_, _, Receiver, ReceiverT, Mesg, _).
+
+% can override pick by setting pick_received (see example in kv.dlv).
+
+
+

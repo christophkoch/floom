@@ -1,5 +1,5 @@
 % Run with
-%> dlv po.dlv delivery.dlv kv.dlv paxos.dlv kv_test.dlv ensemble_test.dlv -N=6
+%> dlv po.dlv delivery.dlv pick_received.dlv kv.dlv paxos.dlv kv_test.dlv ensemble_test.dlv -N=6
 
 
 % force-choose worlds with inconsistent kvstores to make it interesting.

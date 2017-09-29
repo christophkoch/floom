@@ -1,9 +1,23 @@
 node(n1). node(n2).
 
-sent(n1, 0, n2, "hello", "world").
-sent(n1, 0, n1, "hello", "world").
+%sent(n1, 0, n2, "hello", "world").
+%sent(n1, 0, n1, "hello", "world").
 
 %>dlv po.dlv delivery.dlv delivery_test.dlv -N=1 -filter=received -filter=next
 %{next(n1,0,n1,1), next(n2,0,n2,1), received(n1,0,n1,1,"hello","world"), next(n1,0,n2,0), received(n1,0,n2,0,"hello","world")}
+
+
+
+
+%An alternative set of sent messages, showing that delivery is not causal
+%(see the first of the three models below):
+
+sent(n1, 0, n2, a, a).
+sent(n1, 1, n2, b, b).
+
+%> dlv po.dlv delivery.dlv delivery_test.dlv -N=1 -filter=received
+%{received(n1,0,n2,1,a,a), received(n1,1,n2,0,b,b)}
+%{received(n1,0,n2,0,a,a), received(n1,1,n2,1,b,b)}
+%{received(n1,0,n2,0,a,a), received(n1,1,n2,0,b,b)}
 
 

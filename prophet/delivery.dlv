@@ -1,11 +1,14 @@
 % Message delivery.
 % Is reliable unless the line containing "lost" is uncommented.
 % Does not model latencies, but (through the get_next - next mechanism)
-% ensures that a msg arrives *after* it is sent. 
+% Messages are delivered at most once.
+% Ensures that a msg arrives *after* it is sent (in the partial order
+% built up to model the world; this does not create a causal ordering). 
 %
 % Receiving a mesg sent by
 % sent(Sender, SenderT, Receiver, MesgID, MesgParameter)
-% Use pick(..) for optionally picking one if several of the same type are received at the same time.
+%
+% Use pick_received(..) for optionally picking one if several of the same type are received at the same time.
 
 
 % refine the partial order.
@@ -13,41 +16,10 @@ get_next(Sender, SenderT, Receiver) :-
     sent(Sender, SenderT, Receiver, _, _).
 
 
-
-
 % do the delivery.
 received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam)
 % v lost(Sender, SenderT, Receiver,            Mesg, MParam)
  :- sent(Sender, SenderT, Receiver,            Mesg, MParam),
     next(Sender, SenderT, Receiver, ReceiverT).
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% if received multiple messages of the same type in a single tick,
-% pick exactly one.
-% Must be activated for each message type Mesg for which it is to be
-% used by setting do_pick(Mesg).
-
-% pick a subset
- pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) v
--pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) :-
-      received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam),
-      do_pick(Mesg).
-
-% at most one pick
-:- pick_received(_, _, Receiver, ReceiverT, Mesg, V1),
-   pick_received(_, _, Receiver, ReceiverT, Mesg, V2), V1 != V2.
-
-% at least one pick
-:- received(_, _, Receiver, ReceiverT, Mesg, _),
-   not some_pick(Receiver, ReceiverT, Mesg),
-   do_pick(Mesg).
-some_pick(Receiver, ReceiverT, Mesg) :-
-   pick_received(_, _, Receiver, ReceiverT, Mesg, _).
-
-% can override pick by setting pick_received (see example in kv.dlv).
-
 
 

@@ -1,5 +1,5 @@
 % Run with
-%> dlv po.dlv delivery.dlv paxos.dlv paxos_test.dlv -N=4
+%> dlv po.dlv delivery.dlv pick_received.dlv paxos.dlv paxos_test.dlv -N=4 -filter=answer
 
 
 node(n1). node(n2).
