@@ -1,3 +1,5 @@
+% Sending and receiving messages.
+%
 % Receiving a mesg sent by
 % sent(Sender, SenderT, Receiver, MesgID, MesgParameter)
 % Use pick(..) for optionally picking one if several of the same type are received at the same time.

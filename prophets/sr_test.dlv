@@ -1,0 +1,12 @@
+node(n1). node(n2).
+
+sent(n1, 0, n2, "hello", "world").
+
+
+%> dlv po.dlv sr.dlv sr_test.dlv -N=1 -filter=next -filter=received
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), next(n1,0,n2,1), received(n1,0,n2,1,"hello","world")}
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), next(n1,0,n2,0), received(n1,0,n2,0,"hello","world")}
+
+
