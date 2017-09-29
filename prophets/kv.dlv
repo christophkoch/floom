@@ -1,12 +1,14 @@
 % kv is a not eventually consistent key-value store
 % with only one key (implicit). easy to generalize.
-% client writes to the kv store using set(Node, T, Val)
+%
 % Requires
-% * po.dlv and delivery.dlv (run with "dlv po.dlv delivery.dlv kv.dlv -N=<..> ..")
-% * node(Node)
-% * set(Node, T, Val)
+% * po.dlv and delivery.dlv
+    (run with "dlv po.dlv delivery.dlv kv.dlv <other dlv files> -N=<..>")
+% * node(Node)          ... all nodes store replica
+% * set(Node, T, Val)   ... for client writes to the kv store.
 
 
+% forward changes to other replica.
 sent(N0, T0, N, kv_set, V) :- set(N0, T0, V), node(N), N != N0.
 
 % override: local set takes priority over received.
@@ -20,9 +22,12 @@ kv(N, T, V) :- pick_received(_, _, N, T, kv_set, V).
 kv(N, T, V) :- kv(N, T0, V), #succ(T0, T), not some_pick(N, T, kv_set).
 
 
+% Has node aquiesced? This is for analysis purposes and conceptually not
+% available to the kv-store.
+kv_ready(N, T) :- pick_received(_, _, N, T, kv_set, _),
+                  not kv_exists_gt_ts(N, T).
 kv_exists_gt_ts(N, T) :- #int(T),
   pick_received(_, _, N, T2, kv_set, _), T < T2.
-kv_ready(N, T) :- pick_received(_, _, N, T, kv_set, _), not kv_exists_gt_ts(N, T).
 
 
 

@@ -1,7 +1,6 @@
 % Paxos
 % Use request(Node, T) to start Paxos.
-% All nodes are acceptors and learners.
-% The proposer is among the acceptors.
+% All nodes (proposer included) are acceptors and learners.
 
 
 
