@@ -5,9 +5,7 @@ sent(n1, 0, n1, "hello", "world").
 
 
 %>dlv po.dlv delivery.dlv delivery_test.dlv -N=1 -filter=received -filter=next
-
 %{next(n1,0,n1,1), next(n2,0,n2,1), received(n1,0,n1,1,"hello","world"), next(n1,0,n2,0), received(n1,0,n2,0,"hello","world")}
-
 %{next(n1,0,n1,1), next(n2,0,n2,1), received(n1,0,n1,1,"hello","world"), next(n1,0,n2,0), received(n1,0,n2,0,"hello","world")}
 
 
