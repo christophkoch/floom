@@ -1,0 +1,19 @@
+% run with
+%
+% dlv -N=1 po.dlv po_test.dlv -filter=next
+
+node(n1). node(n2).
+
+get_next(n1, 0, n2).
+get_next(n2, 0, n1).
+
+
+% Result:
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), next(n1,0,n2,1), next(n2,0,n1,0)}
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), next(n1,0,n2,0), next(n2,0,n1,1)}
+%
+%{next(n1,0,n1,1), next(n2,0,n2,1), next(n1,0,n2,1), next(n2,0,n1,1)}
+
+
