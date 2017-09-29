@@ -9,5 +9,6 @@ Dependencies:
 ```
 po.dlv <- po_test.dlv
        <- delivery.dlv <- delivery_test.dlv
-                 <- kv.dlv <- kv_test.dlv <- paxos.dlv
+                       <- kv.dlv <- kv_test.dlv  <-+ paxos_test.dlv
+                       <- paxos.dlv              <-+                <- ensemble_test.dlv
 ```
