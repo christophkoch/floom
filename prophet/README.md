@@ -1,4 +1,4 @@
-## The Prophets of Floom enjoy finding bugs in distributed systems.
+## The Prophet of Floom exposes bugs in distributed systems.
 
 This is dlv code. Download dlv from http://www.dlvsystem.com.
 
