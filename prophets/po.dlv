@@ -1,9 +1,25 @@
-%%%%%%%%%%%%%%%%%%%%%%
-% possible partial orders of time stamps
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Possible partial orders of time stamps
+%
+% request a ReceiverT through
+%
+% next(Sender, SenderT, Receiver, ReceiverT)
+%
+% by setting
+%
+% get_next(Sender, SenderT, Receiver)
+%
+% Required:
+% * Integers (dlv -N=<sufficiently large int>)
+% * node(N)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-   next(Sender, SenderT, Receiver, ReceiverT)
-v -next(Sender, SenderT, Receiver, ReceiverT) :- 
+
+   next0(Sender, SenderT, Receiver, ReceiverT)
+v -next0(Sender, SenderT, Receiver, ReceiverT) :- 
       get_next(Sender, SenderT, Receiver), #int(ReceiverT).
+
+next(Sender, SenderT, Receiver, ReceiverT) :- next0(Sender, SenderT, Receiver, ReceiverT).
 
 next(N, T0, N, T) :- node(N), #int(T0), #succ(T0, T).
 
