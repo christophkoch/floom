@@ -6,7 +6,8 @@
 
 
 sent(Proposer, Prop_T, Acceptor, prepare, V) :- kv(Proposer, Prop_T, V),
-  request(Proposer, Prop_T), node(Acceptor),
+  request(Proposer, Prop_T),
+  node(Acceptor), % every node is an acceptor
   not paxos_running(Proposer, Prop_T).
 
 
@@ -16,7 +17,7 @@ sent(Acceptor, T, Proposer, promise, V) :-
 
 do_pick(prepare).
 
-%paxos_running(Acceptor, T) :- pick_received(_, _, Acceptor, T, prepare, _).
+paxos_running(Acceptor, T) :- pick_received(_, _, Acceptor, T, prepare, _).
 
 
 sent(Proposer, T, Acceptor, do_accept, V) :-
@@ -24,7 +25,8 @@ sent(Proposer, T, Acceptor, do_accept, V) :-
   received_from_all(Proposer, T, promise).
 
 sent(Acceptor, T, Learner, accepted, V) :-
-  received(_, _, Acceptor, T, do_accept, V), node(Learner).
+  received(_, _, Acceptor, T, do_accept, V),
+  node(Learner). % every node is a learner
 
 answer(Learner, V) :- received_from_all(Learner, _, accepted),
                       received(_, _, Learner, _, accepted, V).

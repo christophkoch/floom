@@ -1,5 +1,7 @@
 % Message delivery.
 % Is reliable unless the line containing "lost" is uncommented.
+% Does not model latencies, but (through the get_next - next mechanism)
+% ensures that a msg arrives *after* it is sent. 
 %
 % Receiving a mesg sent by
 % sent(Sender, SenderT, Receiver, MesgID, MesgParameter)
@@ -21,7 +23,14 @@ received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam)
 
 
 
-% if received multiple in same tick, pick exactly one.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% if received multiple messages of the same type in a single tick,
+% pick exactly one.
+% Must be activated for each message type Mesg for which it is to be
+% used by setting do_pick(Mesg).
+
+% pick a subset
  pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) v
 -pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) :-
       received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam),
