@@ -15,13 +15,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-   next0(Sender, SenderT, Receiver, ReceiverT)
+next0(   Sender, SenderT, Receiver, ReceiverT)
 v -next0(Sender, SenderT, Receiver, ReceiverT) :- 
       get_next(Sender, SenderT, Receiver), #int(ReceiverT).
 
-next(Sender, SenderT, Receiver, ReceiverT) :- next0(Sender, SenderT, Receiver, ReceiverT).
+next0(N, T0, N, T) :- node(N), #int(T0), #succ(T0, T).
 
-next(N, T0, N, T) :- node(N), #int(T0), #succ(T0, T).
+next(   Sender, SenderT, Receiver, ReceiverT) :-
+  next0(Sender, SenderT, Receiver, ReceiverT).
+
+
+% if a next is requested, must deliver.
+exists_next(Sender, SenderT, Receiver) :- next(Sender, SenderT, Receiver, _).
+:- get_next(Sender, SenderT, Receiver), not exists_next(Sender, SenderT, Receiver).
+
+% next must be unique.
+:- next(Sender, SenderT, Receiver, RT1),
+   next(Sender, SenderT, Receiver, RT2), RT1 != RT2.
+
 
 before(Sender, SenderT, Receiver, ReceiverT) :-
   next(Sender, SenderT, Receiver, ReceiverT).
@@ -30,9 +41,9 @@ before(N1, T1, N3, T3) :- before(N1, T1, N2, T2), before(N2, T2, N3, T3).
 
 :- before(N, T, N, T).
 
-exists_next(Sender, SenderT, Receiver) :- next(Sender, SenderT, Receiver, _).
-:- get_next(Sender, SenderT, Receiver), not exists_next(Sender, SenderT, Receiver).
 
-:- next(Sender, SenderT, Receiver, RT1), next(Sender, SenderT, Receiver, RT2), RT1 != RT2.
-
+% don't skip timestamps
+used_ts(S, ST) :- next(S, ST, R, RT), S != R.
+used_ts(R, RT) :- next(S, ST, R, RT), S != R.
+:- used_ts(N, T), not used_ts(N, T0), #int(T0), T0 < T.
 

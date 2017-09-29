@@ -1,17 +1,15 @@
-%%%%%%%%%%%%%%%%%%%%%%
 % Paxos
-
-% client request
-request(n1, 2).
+% Use request(Node, T) to start Paxos.
 
 %note: the proposer is among the acceptors
 sent(Proposer, Prop_T, Acceptor, prepare, V) :- kv(Proposer, Prop_T, V),
-  request(Proposer, Prop_T), node(Acceptor), not paxos_running(Proposer).
+  request(Proposer, Prop_T), node(Acceptor). %, not paxos_running(Proposer).
+
 
 sent0(Acceptor, Proposer, promise, V) :- pick_received(Proposer, _, Acceptor, T, prepare, V).
 
 % simplification. paxos only started once, protocol completely executes immediately (time stamp of start)
-paxos_running(Acceptor) :- pick_received(_, _, Acceptor, _, prepare, _).
+%paxos_running(Acceptor) :- pick_received(_, _, Acceptor, _, prepare, _).
 
 
 % universal quantification: all have sent
@@ -28,11 +26,5 @@ sent0(Proposer, Acceptor, do_accept, V) :- sent0(Acceptor, Proposer, promise, V)
 sent0(Acceptor, Learner, accepted, V) :- sent0(_, Acceptor, do_accept, V), node(Learner).
 
 answer(Learner, V) :- all_have_sent0(Learner, accepted), sent0(_, Learner, accepted, V).
-
-bad_paxos(V1, V2) :- answer(N1, V1), answer(N2, V2), V1 != V2.
-
-% look for bugs
-exists_bad_paxos :- bad_paxos(_, _).
-%:- not exists_bad_paxos.
 
 

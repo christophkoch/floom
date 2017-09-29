@@ -19,7 +19,8 @@ kv(N, T, V) :- pick_received(_, _, N, T, kv_set, V).
 kv(N, T, V) :- kv(N, T0, V), #succ(T0, T), not some_pick(N, T, kv_set).
 
 
-
+kv_exists_gt_ts(N, T) :- #int(T),  pick_received(_, _, N, T2, _, _), T < T2.
+kv_ready(N, T) :- pick_received(_, _, N, T, _, _), not kv_exists_gt_ts(N, T).
 
 
 
