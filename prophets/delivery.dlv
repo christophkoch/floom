@@ -1,20 +1,24 @@
-% Sending and receiving messages.
+% Message delivery.
+% Is reliable unless the line containing "lost" is uncommented.
 %
 % Receiving a mesg sent by
 % sent(Sender, SenderT, Receiver, MesgID, MesgParameter)
 % Use pick(..) for optionally picking one if several of the same type are received at the same time.
 
 
+% refine the partial order.
 get_next(Sender, SenderT, Receiver) :-
     sent(Sender, SenderT, Receiver, _, _).
 
 
 
 
+% do the delivery.
 received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam)
 % v lost(Sender, SenderT, Receiver,            Mesg, MParam)
  :- sent(Sender, SenderT, Receiver,            Mesg, MParam),
     next(Sender, SenderT, Receiver, ReceiverT).
+
 
 
 % if received multiple in same tick, pick exactly one.

@@ -2,7 +2,7 @@
 % with only one key (implicit). easy to generalize.
 % client writes to the kv store using set(Node, T, Val)
 % Requires
-% * po.dlv and sr.dlv (run with "dlv po.dlv sr.dlv kv.dlv -N=<..> ..")
+% * po.dlv and delivery.dlv (run with "dlv po.dlv delivery.dlv kv.dlv -N=<..> ..")
 % * node(Node)
 % * set(Node, T, Val)
 

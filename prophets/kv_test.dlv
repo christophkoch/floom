@@ -15,7 +15,7 @@ has_gt(X) :- #int(X), #int(Y), X < Y.
 
 % Example:
 %
-%> dlv -N=1 po.dlv sr.dlv kv.dlv kv_test.dlv -filter=bad -filter=kv -filter=next
+%> dlv -N=1 po.dlv delivery.dlv kv.dlv kv_test.dlv -filter=bad -filter=kv -filter=next
 %
 %{next(n1,0,n1,1), next(n2,0,n2,1), kv(n1,0,a), kv(n2,0,b), next(n1,0,n2,1), next(n2,0,n1,0), kv(n2,1,a), kv(n1,1,a)}
 %

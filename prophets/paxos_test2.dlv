@@ -1,5 +1,5 @@
 % Run with
-%> dlv po.dlv sr.dlv paxos.dlv paxos_test2.dlv -N=1
+%> dlv po.dlv delivery.dlv paxos.dlv paxos_test2.dlv -N=1
 %
 % There will be no model, so everything is good.
 
