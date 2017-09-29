@@ -11,6 +11,7 @@ sent(N0, T0, N, kv_set, V) :- set(N0, T0, V), node(N), N != N0.
 
 % override: local set takes priority over received.
 pick_received(N, T, N, T, kv_set, V) :- set(N, T, V).
+do_pick(kv_set).
 
 % set new value
 kv(N, T, V) :- pick_received(_, _, N, T, kv_set, V).
@@ -19,8 +20,9 @@ kv(N, T, V) :- pick_received(_, _, N, T, kv_set, V).
 kv(N, T, V) :- kv(N, T0, V), #succ(T0, T), not some_pick(N, T, kv_set).
 
 
-kv_exists_gt_ts(N, T) :- #int(T),  pick_received(_, _, N, T2, _, _), T < T2.
-kv_ready(N, T) :- pick_received(_, _, N, T, _, _), not kv_exists_gt_ts(N, T).
+kv_exists_gt_ts(N, T) :- #int(T),
+  pick_received(_, _, N, T2, kv_set, _), T < T2.
+kv_ready(N, T) :- pick_received(_, _, N, T, kv_set, _), not kv_exists_gt_ts(N, T).
 
 
 

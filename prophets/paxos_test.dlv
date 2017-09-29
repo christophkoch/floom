@@ -1,7 +1,5 @@
 % Run with
-%> dlv po.dlv delivery.dlv paxos.dlv paxos_test.dlv -N=1
-%
-% There will be no model, so everything is good.
+%> dlv po.dlv delivery.dlv paxos.dlv paxos_test.dlv -N=4
 
 
 node(n1). node(n2).

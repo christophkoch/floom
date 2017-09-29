@@ -1,7 +1,5 @@
 % Run with
-%> dlv po.dlv delivery.dlv kv.dlv paxos.dlv kv_test.dlv ensemble_test.dlv -N=2
-%
-% There will be no model, so everything is good.
+%> dlv po.dlv delivery.dlv kv.dlv paxos.dlv kv_test.dlv ensemble_test.dlv -N=6
 
 
 % force-choose worlds with inconsistent kvstores to make it interesting.
@@ -9,12 +7,15 @@
 
 
 % client request
-request(n1, 3).
+request(n1, 2).
 
 bad_paxos(V1, V2) :- answer(N1, V1), answer(N2, V2), V1 != V2.
 
 % look for bugs
 exists_bad_paxos :- bad_paxos(_, _).
 %:- not exists_bad_paxos.
+%
+% If you uncommment the constraint, there will be no model,
+% which is correct: paxos achieves consistency.
 
 

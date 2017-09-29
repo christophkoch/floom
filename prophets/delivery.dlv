@@ -24,32 +24,21 @@ received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam)
 % if received multiple in same tick, pick exactly one.
  pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) v
 -pick_received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam) :-
-      received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam).
+      received(Sender, SenderT, Receiver, ReceiverT, Mesg, MParam),
+      do_pick(Mesg).
 
 % at most one pick
 :- pick_received(_, _, Receiver, ReceiverT, Mesg, V1),
    pick_received(_, _, Receiver, ReceiverT, Mesg, V2), V1 != V2.
 
 % at least one pick
-:- received(_, _, Receiver, ReceiverT, Mesg, _), not some_pick(Receiver, ReceiverT, Mesg).
-some_pick(Receiver, ReceiverT, Mesg) :- pick_received(_, _, Receiver, ReceiverT, Mesg, _).
+:- received(_, _, Receiver, ReceiverT, Mesg, _),
+   not some_pick(Receiver, ReceiverT, Mesg),
+   do_pick(Mesg).
+some_pick(Receiver, ReceiverT, Mesg) :-
+   pick_received(_, _, Receiver, ReceiverT, Mesg, _).
 
-% can override pick by setting pick_received, see example below.
-
-
-
-
-% universal quantification: Receiver has received Mesg from all nodes.
-%exists_received(Sender,    Receiver, ByReceiverT, Mesg) :-
-%       received(Sender, _, Receiver,   ReceiverT, Mesg, _),
-%       #int(ByReceiverT), ReceiverT <= ByReceiverT.
-%missing_received(Receiver, ByReceiverT, Mesg) :-
-%  node(Receiver), #int(ByReceiverT), received(Sender, _, _, _, Mesg, _),
-%  not exists_received(Sender, Receiver, ByReceiverT, Mesg).
-%received_from_all(   Receiver, ByReceiverT, Mesg) :-
-%  exists_received(_, Receiver, ByReceiverT, Mesg),
-%  not missing_received(Receiver, ByReceiverT, Mesg).
-% if at least one has sent: not vacuously true -- for rule safety.
+% can override pick by setting pick_received (see example in kv.dlv).
 
 
 
