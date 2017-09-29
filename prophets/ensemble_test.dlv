@@ -9,9 +9,9 @@
 % client request
 request(n1, 2).
 
-bad_paxos(V1, V2) :- answer(N1, V1), answer(N2, V2), V1 != V2.
 
 % look for bugs
+bad_paxos(V1, V2) :- answer(N1, V1), answer(N2, V2), V1 != V2.
 exists_bad_paxos :- bad_paxos(_, _).
 %:- not exists_bad_paxos.
 %
