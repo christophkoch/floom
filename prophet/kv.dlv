@@ -3,9 +3,9 @@
 %
 % Requires
 % * po.dlv,
-    delivery.dlv (sent), and
-    pick_received.dlv (do_pick, some_pick, and pick_received)
-    (run with "dlv po.dlv delivery.dlv pick_received.dlv kv.dlv <other dlv files> -N=<..>")
+%   delivery.dlv (sent), and
+%   pick_received.dlv (do_pick, some_pick, and pick_received)
+%   (run with "dlv po.dlv delivery.dlv pick_received.dlv kv.dlv <other dlv files> -N=<..>")
 % * node(Node)          ... all nodes store replica
 % * set(Node, T, Val)   ... for client writes to the kv store.
 
